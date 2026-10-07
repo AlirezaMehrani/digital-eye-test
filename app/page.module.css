@@ -1,0 +1,14 @@
+.featuredHead {
+  max-width: 64ch;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.featuredTitle {
+  margin-top: 16px;
+}
+
+.featuredHead p {
+  margin-top: 20px;
+  margin-inline: auto;
+}

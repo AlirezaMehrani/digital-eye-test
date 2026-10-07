@@ -1,0 +1,8 @@
+.body {
+  padding-top: clamp(40px, 5vw, 68px);
+}
+
+.loading {
+  color: var(--muted);
+  font-size: 0.95rem;
+}

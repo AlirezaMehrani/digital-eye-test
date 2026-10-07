@@ -1,0 +1,139 @@
+.panel {
+  position: sticky;
+  top: calc(var(--header-h) + 24px);
+  padding: clamp(22px, 2.6vw, 30px);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.portrait {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: none;
+}
+
+.name {
+  font-family: var(--font-display), sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.role {
+  margin-top: 5px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--champagne);
+}
+
+.contact {
+  display: grid;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+  font-size: 0.9rem;
+}
+
+.contact a {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  color: var(--muted);
+  transition: color 0.3s var(--ease);
+}
+
+.contact a:hover {
+  color: var(--navy);
+}
+
+.contact svg {
+  color: var(--navy-soft);
+  flex: none;
+}
+
+.actions {
+  display: grid;
+  gap: 10px;
+  margin-top: 26px;
+}
+
+.button {
+  width: 100%;
+}
+
+.note {
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+/* ---------- sticky mobile bar ---------- */
+
+.mobileBar {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 90;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px var(--gutter) max(12px, env(safe-area-inset-bottom));
+  border-top: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.96);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 -12px 30px -24px rgba(15, 27, 42, 0.5);
+  animation: fadeUp 0.4s var(--ease);
+}
+
+.mobileInfo {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.mobileName {
+  font-family: var(--font-display), sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mobilePrice {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.mobileActions {
+  display: flex;
+  gap: 8px;
+  flex: none;
+}
+
+@media (max-width: 860px) {
+  .panel {
+    position: static;
+  }
+
+  .mobileBar {
+    display: flex;
+  }
+}
