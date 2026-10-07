@@ -57,6 +57,9 @@ body {
   line-height: 1.68;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  /* `clip` (unlike `hidden`) does not create a scroll container, which is what
+     lets the hero's `position: sticky` stage pin against the viewport. */
+  overflow-x: clip;
 }
 
 img {

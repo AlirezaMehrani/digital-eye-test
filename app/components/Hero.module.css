@@ -1,8 +1,30 @@
+/* ------------------------------------------------------------------
+   Hero — scroll-scrubbed video.
+
+   `.hero` is the tall scroll runway (the distance the user travels);
+   `.viewport` is the sticky 100vh stage that is pinned while that
+   distance is consumed. Progress through the runway is mapped onto the
+   video timeline by app/lib/useScrollScrub.ts.
+   ------------------------------------------------------------------ */
+
 .hero {
   position: relative;
+  height: 300vh;
+  background: var(--navy-900);
+}
+
+/* Video unavailable → fall back to a normal, non-pinned hero. */
+.heroStatic {
+  height: auto;
+}
+
+.viewport {
+  position: sticky;
+  top: 0;
   display: flex;
   align-items: flex-start;
-  min-height: clamp(640px, 92vh, 960px);
+  height: 100vh;
+  height: 100svh;
   overflow: hidden;
   background: var(--navy-900);
 }
@@ -10,21 +32,41 @@
 .media {
   position: absolute;
   inset: 0;
+  background-color: var(--navy-900);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
+.video,
 .image {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center 62%;
+}
+
+/* The video stays hidden until it has enough data, so the poster frame
+   (painted on `.media`) is never replaced by a blank rectangle. */
+.video {
+  opacity: 0;
+  transition: opacity 0.9s var(--ease);
+}
+
+.isReady .video {
+  opacity: 1;
+}
+
+.image {
   animation: heroZoom 1.8s var(--ease) both;
 }
 
+/* Deliberately light — the footage stays dominant, text keeps a soft shadow. */
 .overlay {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(9, 17, 29, 0.74) 0%, rgba(9, 17, 29, 0.38) 38%, rgba(9, 17, 29, 0.5) 70%, rgba(9, 17, 29, 0.78) 100%);
+    linear-gradient(180deg, rgba(9, 17, 29, 0.56) 0%, rgba(9, 17, 29, 0.12) 34%, rgba(9, 17, 29, 0.2) 66%, rgba(9, 17, 29, 0.64) 100%);
 }
 
 .content {
@@ -39,6 +81,7 @@
   padding: clamp(132px, 19vh, 220px) var(--gutter) clamp(120px, 16vh, 190px);
   text-align: center;
   color: #fff;
+  will-change: opacity, transform;
 }
 
 .kicker {
@@ -48,6 +91,7 @@
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--champagne-soft);
+  text-shadow: 0 2px 18px rgba(9, 17, 29, 0.6);
   animation: fadeUp 0.9s var(--ease) both;
 }
 
@@ -60,6 +104,7 @@
   line-height: 1.04;
   letter-spacing: -0.028em;
   text-wrap: balance;
+  text-shadow: 0 2px 30px rgba(9, 17, 29, 0.55);
   animation: fadeUp 0.95s 0.08s var(--ease) both;
 }
 
@@ -68,7 +113,8 @@
   max-width: 54ch;
   font-size: clamp(1rem, 1.4vw, 1.1rem);
   line-height: 1.72;
-  color: rgba(255, 255, 255, 0.84);
+  color: rgba(255, 255, 255, 0.88);
+  text-shadow: 0 2px 20px rgba(9, 17, 29, 0.6);
   animation: fadeUp 0.95s 0.18s var(--ease) both;
 }
 
@@ -155,6 +201,48 @@
   transform: translateY(-1px);
 }
 
+/* ---------- loading ---------- */
+
+.loader {
+  position: absolute;
+  inset: auto 0 clamp(30px, 6vh, 58px) 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  transition: opacity 0.6s var(--ease);
+}
+
+.loaderDone {
+  opacity: 0;
+}
+
+.loaderLabel {
+  font-family: var(--font-display), sans-serif;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.loaderTrack {
+  position: relative;
+  width: 132px;
+  height: 1px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.loaderFill {
+  position: absolute;
+  inset: 0;
+  background: var(--champagne);
+  transform-origin: left center;
+  transition: transform 0.3s linear;
+}
+
 .fade {
   position: absolute;
   right: 0;
@@ -166,6 +254,10 @@
 }
 
 @media (max-width: 860px) {
+  .hero {
+    height: 260vh;
+  }
+
   .search {
     flex-direction: column;
     align-items: stretch;
@@ -199,15 +291,19 @@
 }
 
 @media (max-width: 620px) {
-  .hero {
-    min-height: 88svh;
-  }
-
+  .video,
   .image {
     object-position: center 66%;
   }
 
   .title {
     max-width: 16ch;
+  }
+}
+
+/* No scrubbing for reduced motion — collapse the runway to a static hero. */
+@media (prefers-reduced-motion: reduce) {
+  .hero {
+    height: auto;
   }
 }
